@@ -13,8 +13,13 @@ jobs:
   runs_on: ubuntu-latest
   container: 
    image: returntocorp/semgrep
-  step:
+  steps:
   - name: FetchSourceCode
     uses: actions/checkout@3
   - name: Semgrep 
-    run: semgrep ci --config=auto
+    run: semgrep ci --config=auto --sarif --output=semgrep.sarif || true
+  - name: Upload
+    uses: github/codeql-action/upload-sarif@v2
+    with: 
+     sarif-file: semgrep.sarif
+    if: always()
