@@ -1,0 +1,20 @@
+name: build
+
+on: 
+ push: 
+  branches: [ "master","preparation" ]
+ pull_request: 
+  branches: [ "master","preparation" ]
+ workflow_dispatch:
+
+jobs:
+ semgrep: 
+  name: semgrep 
+  runs_on: ubuntu-latest
+  container: 
+   image: returntocorp/semgrep
+  step:
+  - name: FetchSourceCode
+    uses: actions/checkout@3
+  - name: Semgrep 
+    run: semgrep ci --config=auto
